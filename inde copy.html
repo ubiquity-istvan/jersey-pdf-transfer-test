@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jersey PDF Test</title>
+  </head>
+  <body>
+    <main>
+      <section>
+        <h1>PDF Links</h1>
+        <a
+          href="https://uploads-ssl.webflow.com/643eebd22a538a186cc95bee/643fbed9a9b23b910ddfef14_t-064-5g-spectrum-award-information-note-letters-of-recommendation-to-ofcom.pdf"
+          >View PDF</a
+        >
+        <a
+          download
+          target="_blank"
+          href="https://uploads-ssl.webflow.com/643eebd22a538a186cc95bee/643fbed9a9b23b910ddfef14_t-064-5g-spectrum-award-information-note-letters-of-recommendation-to-ofcom.pdf"
+          >Download PDF</a
+        >
+      </section>
+    </main>
+
+    <!-- Force download PDF -->
+    <script>
+      function forceDownload(blob, filename) {
+        var a = document.createElement("a");
+        a.download = filename;
+        a.href = blob;
+        // For Firefox https://stackoverflow.com/a/32226068
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+
+      // Current blob size limit is around 500MB for browsers
+      function downloadResource(url, filename) {
+        if (!filename) filename = url.split("\\").pop().split("/").pop();
+        fetch(url, {
+          headers: new Headers({
+            Origin: location.origin,
+          }),
+          mode: "cors",
+        })
+          .then((response) => response.blob())
+          .then((blob) => {
+            let blobUrl = window.URL.createObjectURL(blob);
+            forceDownload(blobUrl, filename);
+          })
+          .catch((e) => console.error(e));
+      }
+
+      //   downloadResource(
+      //     // "https://giant.gfycat.com/RemoteBlandBlackrussianterrier.webm"
+      //     "https://uploads-ssl.webflow.com/643eebd22a538a186cc95bee/643fbed9a9b23b910ddfef14_t-064-5g-spectrum-award-information-note-letters-of-recommendation-to-ofcom.pdf"
+      //   );
+
+      const downloadBtn = document.getElementById("download-pdf");
+
+      downloadBtn.addEventListener("click", () => {
+        console.log("Download button clicked");
+        downloadResource("");
+      });
+
+      // Tests
+      const name = document.querySelector(".jersey-dummy h1");
+      console.log(name);
+
+      name.addEventListener("click", () => {
+        console.log("button clicked");
+        downloadResource(
+          "https://uploads-ssl.webflow.com/643eebd22a538a186cc95bee/643fbed9a9b23b910ddfef14_t-064-5g-spectrum-award-information-note-letters-of-recommendation-to-ofcom.pdf"
+        );
+      });
+    </script>
+  </body>
+</html>
